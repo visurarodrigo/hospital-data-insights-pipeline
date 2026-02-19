@@ -1,0 +1,828 @@
+/* Hospital Data Insights Dashboard - Enhanced Styles */
+
+/* ===========================
+   Global Styles
+   =========================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --success-color: #27ae60;
+    --warning-color: #f39c12;
+    --danger-color: #e74c3c;
+    --info-color: #16a085;
+    --light-bg: #ecf0f1;
+    --white: #ffffff;
+    --text-dark: #2c3e50;
+    --text-light: #7f8c8d;
+    --border-color: #bdc3c7;
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f6fa;
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+
+.container-fluid {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ===========================
+   Header
+   =========================== */
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: var(--white);
+    padding: 1.5rem 0;
+    box-shadow: var(--shadow-lg);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.header-right {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.api-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #95a5a6;
+}
+
+.status-dot.online {
+    background-color: #2ecc71;
+    box-shadow: 0 0 10px #2ecc71;
+    animation: pulse 2s infinite;
+}
+
+.status-dot.offline {
+    background-color: #e74c3c;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.last-updated {
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+/* ===========================
+   Navigation Tabs
+   =========================== */
+.nav-tabs {
+    background: var(--white);
+    border-bottom: 2px solid var(--border-color);
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 75px;
+    z-index: 99;
+}
+
+.nav-tabs .container-fluid {
+    display: flex;
+    gap: 0;
+}
+
+.nav-tab {
+    background: transparent;
+    border: none;
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.3s;
+    border-bottom: 3px solid transparent;
+    font-weight: 500;
+}
+
+.nav-tab:hover {
+    background: #f8f9fa;
+    color: var(--secondary-color);
+}
+
+.nav-tab.active {
+    color: var(--secondary-color);
+    border-bottom-color: var(--secondary-color);
+    background: #f8f9fa;
+}
+
+/* ===========================
+   Department Filter
+   =========================== */
+.filter-section {
+    background: var(--white);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+}
+
+.filter-toggle {
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 0.75rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--text-dark);
+}
+
+.filter-toggle:hover {
+    background: #f8f9fa;
+}
+
+.toggle-icon {
+    transition: transform 0.3s;
+}
+
+.filter-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.filter-content.expanded {
+    max-height: 300px;
+    padding-bottom: 1rem;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.btn-filter {
+    padding: 0.4rem 1rem;
+    background: var(--secondary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.btn-filter:hover {
+    opacity: 0.9;
+}
+
+.selection-count {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-left: auto;
+}
+
+.filter-checkboxes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.5rem;
+}
+
+.filter-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.2s;
+}
+
+.filter-checkbox:hover {
+    background: #f8f9fa;
+}
+
+.filter-checkbox input {
+    cursor: pointer;
+}
+
+/* ===========================
+   Page Content
+   =========================== */
+main {
+    padding: 2rem 0;
+}
+
+.page-content {
+    display: none;
+}
+
+.page-content.active {
+    display: block;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.page-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+}
+
+/* ===========================
+   KPI Cards
+   =========================== */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.kpi-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+.kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+}
+
+.kpi-card.gradient-blue::before { background: linear-gradient(90deg, #667eea, #764ba2); }
+.kpi-card.gradient-green::before { background: linear-gradient(90deg, #56c596, #43a047); }
+.kpi-card.gradient-purple::before { background: linear-gradient(90deg, #a770ef, #cf8bf3); }
+.kpi-card.gradient-orange::before { background: linear-gradient(90deg, #f2994a, #f2c94c); }
+.kpi-card.gradient-red::before { background: linear-gradient(90deg, #eb5757, #eb9d57); }
+.kpi-card.gradient-teal::before { background: linear-gradient(90deg, #00b4db, #0083b0); }
+
+.kpi-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.kpi-icon {
+    font-size: 3rem;
+}
+
+.kpi-content h3 {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.kpi-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.kpi-label {
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+
+/* ===========================
+   Charts
+   =========================== */
+.chart-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.chart-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+}
+
+.chart-card.full-width {
+    grid-column: 1 / -1;
+}
+
+.chart-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--light-bg);
+    padding-bottom: 0.5rem;
+}
+
+/* ===========================
+   Risk Assessment
+   =========================== */
+.risk-assessment-section,
+.population-risk-section {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+}
+
+.risk-assessment-section h3,
+.population-risk-section h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+}
+
+.patient-selector {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.patient-selector label {
+    font-weight: 500;
+}
+
+.patient-dropdown {
+    flex: 1;
+    padding: 0.75rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.btn-primary,
+.btn-secondary {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.btn-primary {
+    background: var(--secondary-color);
+    color: var(--white);
+}
+
+.btn-primary:hover {
+    background: #2980b9;
+}
+
+.btn-secondary {
+    background: var(--success-color);
+    color: var(--white);
+}
+
+.btn-secondary:hover {
+    background: #229954;
+}
+
+.patient-risk-result {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.patient-risk-result.hidden {
+    display: none;
+}
+
+.risk-card {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1.5rem;
+    border: 2px solid var(--border-color);
+}
+
+.risk-card h4 {
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    font-size: 1.1rem;
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+}
+
+.profile-item {
+    padding: 0.5rem;
+    background: var(--white);
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+.risk-gauge-container {
+    text-align: center;
+}
+
+.risk-score-display {
+    margin-top: 1rem;
+}
+
+.risk-percentage {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.risk-category {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+}
+
+.risk-comparison {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--white);
+    border-radius: 8px;
+}
+
+.comparison-item {
+    text-align: center;
+}
+
+.comparison-item span {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.comparison-item strong {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+}
+
+.recommendations-list {
+    line-height: 1.8;
+}
+
+.recommendation {
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 4px solid;
+}
+
+.recommendation.high-priority {
+    background: #fee;
+    border-left-color: var(--danger-color);
+}
+
+.recommendation.medium-priority {
+    background: #fff4e6;
+    border-left-color: var(--warning-color);
+}
+
+.recommendation.low-priority {
+    background: #e8f8f5;
+    border-left-color: var(--success-color);
+}
+
+.recommendation h5 {
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+}
+
+.recommendation ul {
+    margin-left: 1.5rem;
+}
+
+.recommendation li {
+    margin-bottom: 0.5rem;
+}
+
+.risk-factors-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.risk-factor {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.75rem;
+    background: var(--white);
+    border-radius: 8px;
+    border-left: 4px solid;
+}
+
+.risk-factor.critical {
+    border-left-color: #c0392b;
+    background: #fadbd8;
+}
+
+.risk-factor.high {
+    border-left-color: #e74c3c;
+    background: #f9e7e6;
+}
+
+.risk-factor.medium {
+    border-left-color: #f39c12;
+    background: #fef5e7;
+}
+
+.risk-factor.low {
+    border-left-color: #95a5a6;
+    background: #f4f6f7;
+}
+
+.risk-factor.protective {
+    border-left-color: #27ae60;
+    background: #eafaf1;
+}
+
+.factor-icon {
+    font-size: 1.5rem;
+}
+
+.factor-name {
+    font-weight: 500;
+}
+
+.factor-impact {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.factor-severity {
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.risk-summary {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--white);
+    border-radius: 8px;
+    border: 2px dashed var(--border-color);
+}
+
+/* ===========================
+   Population Risk Table
+   =========================== */
+.risk-controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.filter-group {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.filter-group label {
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.filter-group select {
+    padding: 0.5rem;
+    border: 2px solid var(--border-color);
+    border-radius: 5px;
+}
+
+.population-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-badge {
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    border: 2px solid;
+}
+
+.stat-badge.high-risk {
+    background: #fee;
+    border-color: var(--danger-color);
+}
+
+.stat-badge.medium-risk {
+    background: #fff4e6;
+    border-color: var(--warning-color);
+}
+
+.stat-badge.low-risk {
+    background: #e8f8f5;
+    border-color: var(--success-color);
+}
+
+.stat-badge.total {
+    background: #ebf5fb;
+    border-color: var(--secondary-color);
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.table-container {
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+}
+
+.patient-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--white);
+}
+
+.patient-table thead {
+    background: var(--primary-color);
+    color: var(--white);
+}
+
+.patient-table th,
+.patient-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.patient-table th {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.patient-table tbody tr {
+    transition: background 0.2s;
+}
+
+.patient-table tbody tr:hover {
+    background: #f8f9fa;
+}
+
+.patient-table tbody tr.high-risk {
+    background: #fee;
+}
+
+.patient-table tbody tr.medium-risk {
+    background: #fff4e6;
+}
+
+.patient-table tbody tr.low-risk {
+    background: #e8f8f5;
+}
+
+.model-info {
+    padding: 1rem;
+    background: #e8f8f5;
+    border-left: 4px solid var(--info-color);
+    border-radius: 5px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* ===========================
+   Footer
+   =========================== */
+.footer {
+    background: var(--primary-color);
+    color: var(--white);
+    text-align: center;
+    padding: 1.5rem 0;
+    margin-top: 3rem;
+}
+
+.footer p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* ===========================
+   Responsive Design
+   =========================== */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 1.3rem;
+    }
+    
+    .header-content {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .nav-tab {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .kpi-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .chart-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .patient-selector {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .risk-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-checkboxes {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.1rem;
+    }
+    
+    .kpi-value {
+        font-size: 1.5rem;
+    }
+    
+    .nav-tabs .container-fluid {
+        flex-direction: column;
+    }
+    
+    .nav-tab {
+        width: 100%;
+        text-align: center;
+    }
+}
