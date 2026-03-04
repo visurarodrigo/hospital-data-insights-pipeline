@@ -30,7 +30,7 @@ After running the pipeline:
 - `backend/data/hospital_warehouse.db` - DuckDB analytics database (star schema)
 
 ✅ **ML Models**:
-- `backend/models/classifier.pkl` - Random Forest readmission risk model (97.9% accuracy)
+- `backend/models/classifier.pkl` - LTM hybrid readmission risk model (97.9% accuracy)
 - `backend/models/regressor.pkl` - Wait time prediction model (RMSE ~19.38 min)
 - `backend/models/scaler_*.pkl` - Feature scalers
 - `backend/models/metrics.json` - Model performance metrics

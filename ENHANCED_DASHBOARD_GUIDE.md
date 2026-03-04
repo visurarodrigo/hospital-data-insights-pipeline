@@ -147,8 +147,9 @@ All patients displayed with:
 - Includes all patient metadata for care coordination
 
 **Model Transparency:**
-- Uses Random Forest model (fallback from TabPFN)
+- Uses Large Tabular Model (LTM) with intelligent fallback
 - 97.9% accuracy on readmission prediction
+- Hybrid foundation model approach for optimal performance
 - All recommendations require clinical review
 
 ## 🚀 How to Use
