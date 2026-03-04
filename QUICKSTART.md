@@ -1,5 +1,9 @@
 # 🚀 Hospital Insights Pipeline - Quick Start Guide
 
+> **📍 Setup Type**: Local Development  
+> **Frontend**: Also available at https://hospital-insights-c9c40.web.app  
+> **Backend**: Runs locally (API server on your machine)
+
 ## ⚡ 3-Step Launch
 
 ### Step 1: Install Dependencies

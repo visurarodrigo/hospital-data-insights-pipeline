@@ -1,6 +1,13 @@
 # 🚀 Deployment Guide
 
-## Firebase Hosting (Frontend)
+## Current Deployment Status
+
+✅ **Frontend**: Deployed on Firebase Hosting  
+🖥️ **Backend**: Running locally (not yet deployed to cloud)
+
+---
+
+## Firebase Hosting (Frontend) - ✅ DEPLOYED
 
 ### Prerequisites
 - Node.js installed (for Firebase CLI)
@@ -25,11 +32,15 @@
    firebase deploy --only hosting
    ```
 
-Your frontend will be live at: `https://your-project-id.web.app`
+Your frontend is live at: `https://hospital-insights-c9c40.web.app`
 
 ---
 
-## Google Cloud Run (Backend API)
+## Backend Deployment (Optional - Not Yet Implemented)
+
+The backend currently runs locally for development. If you want to deploy it to production, here are the available options:
+
+### Google Cloud Run (Backend API)
 
 ### Prerequisites
 - Google Cloud account with billing enabled

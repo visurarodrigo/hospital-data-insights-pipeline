@@ -2,8 +2,10 @@
 
 A production-ready healthcare analytics platform featuring **Large Tabular Model (LTM)** for AI-powered clinical decision support, interactive dashboards, ETL pipeline, DuckDB data warehouse, and state-of-the-art machine learning risk predictions.
 
-**Live Demo**: https://hospital-insights-c9c40.web.app  
+**Live Demo (Frontend)**: https://hospital-insights-c9c40.web.app  
 **Source Code**: https://github.com/visurarodrigo/hospital-data-insights-pipeline
+
+*Note: Backend runs locally - see [Quick Start](#-quick-start) for setup*
 
 ---
 
@@ -253,7 +255,7 @@ The system intelligently leverages Large Tabular Model for foundation model capa
 
 ## 🌐 Deployment
 
-### Frontend (Firebase Hosting)
+### Frontend (Firebase Hosting) ✅ Deployed
 
 ```bash
 # Deploy frontend
@@ -263,9 +265,22 @@ firebase deploy --only hosting
 
 **Live URL**: https://hospital-insights-c9c40.web.app
 
-### Backend (Railway/Cloud Run)
+### Backend (Local Development) 🖥️
 
-**Option 1: Railway** (Easiest)
+**Current Setup**: Backend runs locally for development and testing
+
+```bash
+# Run backend locally
+python -m uvicorn backend.api:app --reload --port 8000
+```
+
+**Access**: http://localhost:8000
+
+### Backend Cloud Deployment (Optional - Not Yet Implemented)
+
+If you want to deploy the backend to production, here are the options:
+
+**Option 1: Railway**
 1. Visit https://railway.app
 2. Connect GitHub repository
 3. Deploy automatically
@@ -280,7 +295,7 @@ gcloud run deploy hospital-api \
   --port 8080
 ```
 
-**Important**: Update API URL in `frontend/dashboard.js`:
+**Note**: After backend deployment, update API URL in `frontend/dashboard.js`:
 ```javascript
 const API_BASE_URL = 'https://your-deployed-api-url.com';
 ```
