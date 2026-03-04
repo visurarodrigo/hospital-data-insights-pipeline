@@ -19,10 +19,12 @@ python scripts/run_pipeline.py
 
 ### Step 3: Start API Server
 ```powershell
-python -m uvicorn backend.api:app --reload --port 8000
+python -m uvicorn backend.api:app --reload --port 3000
 ```
 
 Then open `frontend/index.html` in your browser!
+
+**Pro Tip**: Try the dark mode toggle in the top-right corner! 🌓
 
 ## 📊 What Gets Created
 
@@ -44,26 +46,32 @@ After running the pipeline:
 ### Test API
 ```powershell
 # Check health
-Invoke-WebRequest "http://localhost:8000/health" -UseBasicParsing
+Invoke-WebRequest "http://localhost:3000/health" -UseBasicParsing
 
 # Get summary
-Invoke-WebRequest "http://localhost:8000/summary" -UseBasicParsing
+Invoke-WebRequest "http://localhost:3000/summary" -UseBasicParsing
 
 # Get OPD analytics
-Invoke-WebRequest "http://localhost:8000/opd-analytics" -UseBasicParsing
+Invoke-WebRequest "http://localhost:3000/opd-analytics" -UseBasicParsing
 
 # Check patient risk
-Invoke-WebRequest "http://localhost:8000/risk/P00001" -UseBasicParsing
+Invoke-WebRequest "http://localhost:3000/risk/P00001" -UseBasicParsing
 ```
 
 ### Test Dashboard
 Open `frontend/index.html` in your browser
 
 You should see:
-- ✅ 6 gradient KPI cards (Patients, Visits, Admissions, Wait Time, Readmission Rate, Revenue)
+- ✅ Modern SaaS-style interface with clean design
+- ✅ Dark/light mode toggle in top-right corner
+- ✅ 6 interactive KPI cards with gradient backgrounds
+- ✅ Real-time API status indicator (green dot = healthy)
 - ✅ 4-page navigation (Overview, OPD Analytics, Inpatient & Ward, AI Risk Assessment)
-- ✅ 12+ interactive charts with legends
-- ✅ Smart department filter (collapsible)
+- ✅ 12+ interactive charts with modern color palette
+- ✅ Toast notifications for user feedback
+- ✅ Smart department filter with chip-style selection
+- ✅ Loading states with skeleton loaders
+- ✅ Fully responsive design (works on mobile)
 - ✅ AI patient risk assessment with clinical recommendations
 - ✅ Population-level risk stratification with CSV export
 
@@ -81,24 +89,35 @@ python scripts/run_pipeline.py
 ```
 
 ### 3. "API connection failed" (in frontend)
-- Ensure API is running: http://localhost:8000/health
-- Start API with: `python -m uvicorn backend.api:app --reload --port 8000`
+- Ensure API is running: http://localhost:3000/health
+- Start API with: `python -m uvicorn backend.api:app --reload --port 3000`
 - Check browser console for errors (F12)
-- Dashboard shows "API Offline" if server isn't running
+- Dashboard shows "API Offline" (red dot) if server isn't running
+- Frontend expects API on port 3000 (configured in dashboard.js)
 
 ### 4. Charts not displaying
 - Hard refresh browser (Ctrl+F5 or Ctrl+Shift+R)
 - Check browser console for JavaScript errors
 - Verify API endpoints returning data
 
-### 5. Multiple servers running (Port 8000 in use)
+### 5. Multiple servers running (Port 3000 in use)
 ```powershell
 # Kill all Python processes
 Get-Process python* | Stop-Process -Force
 
 # Restart server
-python -m uvicorn backend.api:app --reload --port 8000
+python -m uvicorn backend.api:app --reload --port 3000
 ```
+
+### 6. Dark mode not saving
+- Clear browser cache (Ctrl+Shift+Delete)
+- Check browser console for localStorage errors
+- Theme preference is saved in browser localStorage
+
+### 7. Toast notifications not appearing
+- Hard refresh browser (Ctrl+F5)
+- Check browser console for JavaScript errors
+- Ensure dashboard.js is loaded correctly
 
 ## 📈 Expected Performance
 

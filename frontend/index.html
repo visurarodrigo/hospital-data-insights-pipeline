@@ -4,198 +4,233 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hospital Data Insights Dashboard</title>
-   <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container-fluid">
-            <div class="header-content">
-                <h1>🏥 Hospital Data Insights Dashboard</h1>
-                <div class="header-right">
+    <div class="app-shell">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="#" class="sidebar-logo">
+                    <span class="sidebar-logo-icon">🏥</span>
+                    <span>Hospital Insights</span>
+                </a>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="nav-tab active" data-page="overview">
+                    <span class="nav-tab-icon">📊</span>
+                    <span>Overview</span>
+                </button>
+                <button class="nav-tab" data-page="opd">
+                    <span class="nav-tab-icon">🏥</span>
+                    <span>OPD Analytics</span>
+                </button>
+                <button class="nav-tab" data-page="inpatient">
+                    <span class="nav-tab-icon">🛏️</span>
+                    <span>Inpatient & Ward</span>
+                </button>
+                <button class="nav-tab" data-page="ai-risk">
+                    <span class="nav-tab-icon">🤖</span>
+                    <span>AI Risk Assessment</span>
+                </button>
+            </nav>
+        </aside>
+
+        <!-- Mobile Overlay -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- Main Content Area -->
+        <div class="main">
+            <!-- Top Bar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+                        ☰
+                    </button>
+                    <h1 class="topbar-title">Dashboard</h1>
+                </div>
+                <div class="topbar-right">
                     <div class="api-status" id="apiStatus">
                         <span class="status-dot" id="statusDot"></span>
                         <span id="statusText">Connecting...</span>
                     </div>
                     <div class="last-updated" id="lastUpdated">Last updated: --</div>
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                        🌙
+                    </button>
                 </div>
-            </div>
-        </div>
-    </header>
+            </header>
 
-    <!-- Navigation -->
-    <nav class="nav-tabs">
-        <div class="container-fluid">
-            <button class="nav-tab active" data-page="overview">📊 Overview</button>
-            <button class="nav-tab" data-page="opd">🏥 OPD Analytics</button>
-            <button class="nav-tab" data-page="inpatient">🛏️ Inpatient & Ward</button>
-            <button class="nav-tab" data-page="ai-risk">🤖 AI Risk Assessment</button>
-        </div>
-    </nav>
-
-    <!-- Department Filter (Collapsible) -->
-    <div class="filter-section" id="filterSection">
-        <div class="container-fluid">
-            <button class="filter-toggle" id="filterToggle">
-                <span>🔍 Filter by Department</span>
-                <span class="toggle-icon">▼</span>
-            </button>
-            <div class="filter-content" id="filterContent">
-                <div class="filter-actions">
-                    <button class="btn-filter" id="selectAllDepts">✓ All</button>
-                    <button class="btn-filter" id="selectNoneDepts">✗ None</button>
-                    <span class="selection-count" id="selectionCount">10 selected</span>
+            <!-- Department Filter Toolbar -->
+            <div class="toolbar">
+                <div class="filter-header">
+                    <div class="filter-title">🔍 Filter by Department</div>
+                    <div class="filter-quick-actions">
+                        <button class="btn-filter" id="selectAllDepts">✓ All</button>
+                        <button class="btn-filter" id="selectNoneDepts">✗ None</button>
+                        <span class="selection-count" id="selectionCount">10 selected</span>
+                    </div>
                 </div>
                 <div class="filter-checkboxes" id="departmentFilters">
                     <!-- Populated by JS -->
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Main Content -->
-    <main class="container-fluid">
+            <!-- Content Area -->
+            <main class="content">
         
-        <!-- OVERVIEW PAGE -->
-        <div class="page-content active" id="page-overview">
-            <!-- KPI Cards -->
-            <section class="kpi-grid">
-                <div class="kpi-card gradient-blue">
-                    <div class="kpi-icon">👥</div>
-                    <div class="kpi-content">
-                        <h3>Total Patients</h3>
-                        <p class="kpi-value" id="totalPatients">--</p>
-                        <span class="kpi-label">Registered in System</span>
+                <!-- OVERVIEW PAGE -->
+                <div class="page-content active" id="page-overview">
+                    <!-- KPI Cards -->
+                    <section class="kpi-grid">
+                        <div class="kpi-card gradient-blue">
+                            <div class="kpi-card-inner">
+                                <div class="kpi-icon">👥</div>
+                                <div class="kpi-content">
+                                    <h3>Total Patients</h3>
+                                    <p class="kpi-value" id="totalPatients">--</p>
+                                    <span class="kpi-label">Registered in System</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card gradient-green">
+                            <div class="kpi-card-inner">
+                                <div class="kpi-icon">🏥</div>
+                                <div class="kpi-content">
+                                    <h3>OPD Visits</h3>
+                                    <p class="kpi-value" id="totalVisits">--</p>
+                                    <span class="kpi-label">All Time</span>
+                                </div>
+                            </div>
+                        </div>
+
+         <div class="kpi-card gradient-purple">
+                            <div class="kpi-card-inner">
+                                <div class="kpi-icon">🛏️</div>
+                                <div class="kpi-content">
+                                    <h3>Admissions</h3>
+                                    <p class="kpi-value" id="totalAdmissions">--</p>
+                                    <span class="kpi-label">Inpatient</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card gradient-orange">
+                            <div class="kpi-card-inner">
+                                <div class="kpi-icon">⏱️</div>
+                                <div class="kpi-content">
+                                    <h3>Avg Wait Time</h3>
+                                    <p class="kpi-value" id="avgWaitTime">--</p>
+                                    <span class="kpi-label">Minutes</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card gradient-red">
+                            <div class="kpi-card-inner">
+                                <div class="kpi-icon">🔄</div>
+                                <div class="kpi-content">
+                                    <h3>Readmission Rate</h3>
+                                    <p class="kpi-value" id="readmissionRate">--</p>
+                                    <span class="kpi-label">30-Day</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card gradient-teal">
+                            <div class="kpi-card-inner">
+                                <div class="kpi-icon">💰</div>
+                                <div class="kpi-content">
+                                    <h3>Total Revenue</h3>
+                                    <p class="kpi-value" id="totalRevenue">--</p>
+                                    <span class="kpi-label">Billing Amount</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Charts Row -->
+                    <section class="chart-grid">
+                        <div class="chart-card">
+                            <h3>📈 Monthly Visit Trends</h3>
+                            <canvas id="trendsChart"></canvas>
+                        </div>
+
+                        <div class="chart-card">
+                            <h3>🏢 Department Distribution</h3>
+                            <canvas id="departmentChart"></canvas>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- OPD ANALYTICS PAGE -->
+                <div class="page-content" id="page-opd">
+                    <h2 class="page-title">🏥 Outpatient Department Analytics</h2>
+                    
+                    <div class="chart-grid">
+                        <div class="chart-card">
+                            <h3>⏱️ Average Wait Time by Department</h3>
+                            <canvas id="opdDeptWaitChart"></canvas>
+                        </div>
+
+                        <div class="chart-card">
+                            <h3>🕐 Wait Time by Hour of Day</h3>
+                            <canvas id="opdHourlyChart"></canvas>
+                        </div>
+
+                        <div class="chart-card">
+                            <h3>📅 Visit Volume by Day of Week</h3>
+                            <canvas id="opdDailyChart"></canvas>
+                        </div>
+
+                        <div class="chart-card">
+                            <h3>📊 Department Visit Volume</h3>
+                            <canvas id="opdVolumeChart"></canvas>
+                        </div>
                     </div>
                 </div>
 
-                <div class="kpi-card gradient-green">
-                    <div class="kpi-icon">🏥</div>
-                    <div class="kpi-content">
-                        <h3>OPD Visits</h3>
-                        <p class="kpi-value" id="totalVisits">--</p>
-                        <span class="kpi-label">All Time</span>
+                <!-- INPATIENT ANALYTICS PAGE -->
+                <div class="page-content" id="page-inpatient">
+                    <h2 class="page-title">🛏️ Inpatient & Ward Analytics</h2>
+                    
+                    <div class="chart-grid">
+                        <div class="chart-card">
+                            <h3>📊 Average Length of Stay by Ward</h3>
+                            <canvas id="wardLOSChart"></canvas>
+                        </div>
+
+                        <div class="chart-card">
+                            <h3>🔄 30-Day Readmission Rate by Diagnosis</h3>
+                            <canvas id="readmissionDiagChart"></canvas>
+                        </div>
+
+                        <div class="chart-card full-width">
+                            <h3>📈 Monthly Admission Trends</h3>
+                            <canvas id="admissionTrendsChart"></canvas>
+                        </div>
                     </div>
                 </div>
 
-                <div class="kpi-card gradient-purple">
-                    <div class="kpi-icon">🛏️</div>
-                    <div class="kpi-content">
-                        <h3>Admissions</h3>
-                        <p class="kpi-value" id="totalAdmissions">--</p>
-                        <span class="kpi-label">Inpatient</span>
-                    </div>
-                </div>
+                <!-- AI RISK ASSESSMENT PAGE -->
+                <div class="page-content" id="page-ai-risk">
+                    <h2 class="page-title">🤖 AI-Powered Readmission Risk Assessment</h2>
+                    
+                    <!-- Individual Patient Assessment -->
+                    <section class="risk-assessment-section">
+                        <h3>👤 Individual Patient Assessment</h3>
+                        
+                        <div class="patient-selector">
+                            <label for="patientSelect">Select Patient:</label>
+                            <select id="patientSelect" class="patient-dropdown">
+                                <option value="">Loading patients...</option>
+                            </select>
+                            <button id="assessRiskBtn" class="btn-primary">Assess Risk</button>
+                        </div>
 
-                <div class="kpi-card gradient-orange">
-                    <div class="kpi-icon">⏱️</div>
-                    <div class="kpi-content">
-                        <h3>Avg Wait Time</h3>
-                        <p class="kpi-value" id="avgWaitTime">--</p>
-                        <span class="kpi-label">Minutes</span>
-                    </div>
-                </div>
-
-                <div class="kpi-card gradient-red">
-                    <div class="kpi-icon">🔄</div>
-                    <div class="kpi-content">
-                        <h3>Readmission Rate</h3>
-                        <p class="kpi-value" id="readmissionRate">--</p>
-                        <span class="kpi-label">30-Day</span>
-                    </div>
-                </div>
-
-                <div class="kpi-card gradient-teal">
-                    <div class="kpi-icon">💰</div>
-                    <div class="kpi-content">
-                        <h3>Total Revenue</h3>
-                        <p class="kpi-value" id="totalRevenue">--</p>
-                        <span class="kpi-label">Billing Amount</span>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Charts Row -->
-            <section class="chart-grid">
-                <div class="chart-card">
-                    <h3>📈 Monthly Visit Trends</h3>
-                    <canvas id="trendsChart"></canvas>
-                </div>
-
-                <div class="chart-card">
-                    <h3>🏢 Department Distribution</h3>
-                    <canvas id="departmentChart"></canvas>
-                </div>
-            </section>
-        </div>
-
-        <!-- OPD ANALYTICS PAGE -->
-        <div class="page-content" id="page-opd">
-            <h2 class="page-title">🏥 Outpatient Department Analytics</h2>
-            
-            <div class="chart-grid">
-                <div class="chart-card">
-                    <h3>⏱️ Average Wait Time by Department</h3>
-                    <canvas id="opdDeptWaitChart"></canvas>
-                </div>
-
-                <div class="chart-card">
-                    <h3>🕐 Wait Time by Hour of Day</h3>
-                    <canvas id="opdHourlyChart"></canvas>
-                </div>
-
-                <div class="chart-card">
-                    <h3>📅 Visit Volume by Day of Week</h3>
-                    <canvas id="opdDailyChart"></canvas>
-                </div>
-
-                <div class="chart-card">
-                    <h3>📊 Department Visit Volume</h3>
-                    <canvas id="opdVolumeChart"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <!-- INPATIENT ANALYTICS PAGE -->
-        <div class="page-content" id="page-inpatient">
-            <h2 class="page-title">🛏️ Inpatient & Ward Analytics</h2>
-            
-            <div class="chart-grid">
-                <div class="chart-card">
-                    <h3>📊 Average Length of Stay by Ward</h3>
-                    <canvas id="wardLOSChart"></canvas>
-                </div>
-
-                <div class="chart-card">
-                    <h3>🔄 30-Day Readmission Rate by Diagnosis</h3>
-                    <canvas id="readmissionDiagChart"></canvas>
-                </div>
-
-                <div class="chart-card full-width">
-                    <h3>📈 Monthly Admission Trends</h3>
-                    <canvas id="admissionTrendsChart"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <!-- AI RISK ASSESSMENT PAGE -->
-        <div class="page-content" id="page-ai-risk">
-            <h2 class="page-title">🤖 AI-Powered Readmission Risk Assessment</h2>
-            
-            <!-- Individual Patient Assessment -->
-            <section class="risk-assessment-section">
-                <h3>👤 Individual Patient Assessment</h3>
-                
-                <div class="patient-selector">
-                    <label for="patientSelect">Select Patient:</label>
-                    <select id="patientSelect" class="patient-dropdown">
-                        <option value="">Loading patients...</option>
-                    </select>
-                    <button id="assessRiskBtn" class="btn-primary">Assess Risk</button>
-                </div>
-
-                <div id="patientRiskResult" class="patient-risk-result hidden">
+                        <div id="patientRiskResult" class="patient-risk-result hidden">
                     <!-- Patient Profile -->
                     <div class="risk-card">
                         <h4>📋 Clinical Profile</h4>
@@ -317,20 +352,23 @@
 
                 <!-- Model Transparency Info -->
                 <div class="model-info">
-                    <p><strong>Model Information:</strong> Predictions use the best available trained model (TabPFN → CatBoost → Random Forest → Logistic Regression). 
-                    All recommendations are AI-assisted and should be reviewed by healthcare professionals.</p>
+                            <p><strong>Model Information:</strong> Predictions use the best available trained model (TabPFN → CatBoost → Random Forest → Logistic Regression). 
+                            All recommendations are AI-assisted and should be reviewed by health care professionals.</p>
+                        </div>
+                    </section>
                 </div>
-            </section>
-        </div>
 
-    </main>
+            </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container-fluid">
-            <p>&copy; 2026 Hospital Data Insights Platform | Real-time Analytics & AI-Powered Clinical Decision Support</p>
+            <!-- Footer -->
+            <footer class="footer">
+                <p>&copy; 2026 Hospital Data Insights Platform | Real-time Analytics & AI-Powered Clinical Decision Support</p>
+            </footer>
         </div>
-    </footer>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toastContainer"></div>
 
     <script src="dashboard.js"></script>
 </body>

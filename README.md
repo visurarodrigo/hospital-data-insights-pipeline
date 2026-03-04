@@ -40,27 +40,31 @@ A production-ready healthcare analytics platform featuring **Large Tabular Model
 **Interactive Dashboard**
 - 📊 4-page multi-view analytics (Overview, OPD, Inpatient, AI Risk)
 - 📈 12+ interactive visualizations (Chart.js)
-- 🎨 Professional UI with gradient cards
+- 🎨 Modern SaaS-style UI with design system
+- 🌓 Dark mode with theme toggle
+- 🔔 Toast notifications for user feedback
 - 💾 CSV export for risk stratification
 - 🔍 Smart filters and real-time updates
+- 📱 Fully responsive (mobile/tablet/desktop)
+- ⚡ Loading states with skeleton loaders
 
 ## 📸 Dashboard Previews
 
 ### Overview Dashboard
-![Overview Dashboard](frontend/Screenshots/Overview%20Page.png)
-*6 KPI cards showing patients, visits, admissions, wait time, readmission rate, and revenue with monthly trends and department distribution charts*
+![Overview Dashboard](frontend/Screenshots/Overview.png)
+*Modern SaaS interface with 6 KPI cards showing patients, visits, admissions, wait time, readmission rate, and revenue. Features dark mode toggle, real-time API status, and interactive charts with monthly trends and department distribution*
 
 ### OPD Analytics
-![OPD Analytics](frontend/Screenshots/OPD%20Page.png)
-*Outpatient department analytics with wait time analysis by department, hour of day, and day of week patterns*
+![OPD Analytics](frontend/Screenshots/OPD.png)
+*Outpatient department analytics with clean, modern design. Wait time analysis by department, hour of day, and day of week patterns with responsive layout and loading states*
 
 ### Inpatient & Ward Analytics
-![Inpatient Analytics](frontend/Screenshots/inpatient%20page.png)
-*Ward-level analysis showing average length of stay, readmission rates by diagnosis, and monthly admission trends*
+![Inpatient Analytics](frontend/Screenshots/Inpatient.png)
+*Ward-level analysis with modern card-based layout. Shows average length of stay, readmission rates by diagnosis, and monthly admission trends with interactive filtering*
 
 ### AI-Powered Patient Risk Assessment
-![Risk Assessment](frontend/Screenshots/risk%20page.png)
-*Interactive patient risk scoring with clinical recommendations, risk factor analysis, and population-level risk stratification with CSV export*
+![Risk Assessment](frontend/Screenshots/Risk.png)
+*Premium SaaS-style risk assessment interface with interactive patient risk scoring, clinical recommendations, risk factor analysis, and population-level risk stratification with CSV export. Features smart search and advanced filtering*
 
 ---
 
@@ -93,7 +97,8 @@ A production-ready healthcare analytics platform featuring **Large Tabular Model
 **Tech Stack**
 - **Backend**: Python 3.10+, FastAPI, Uvicorn, Pandas, Scikit-learn
 - **Database**: DuckDB (SQL analytics), Parquet (storage)
-- **Frontend**: Vanilla JavaScript, Chart.js, HTML5/CSS3
+- **Frontend**: Vanilla JavaScript, Chart.js, HTML5/CSS3, Modern Design System
+- **UI/UX**: CSS Custom Properties, Dark Mode, Responsive Design, Toast Notifications
 - **ML**: TabPFN (Large Tabular Foundation Model - Primary), Random Forest (Fallback), Feature Engineering
 
 ---
@@ -115,7 +120,7 @@ pip install -r requirements.txt
 python scripts/run_pipeline.py
 
 # 2. Start API server
-python -m uvicorn backend.api:app --reload --port 8000
+python -m uvicorn backend.api:app --reload --port 3000
 
 # 3. Open frontend
 # Option A: Double-click frontend/index.html
@@ -123,12 +128,15 @@ python -m uvicorn backend.api:app --reload --port 8000
 cd frontend
 python -m http.server 8080
 # Visit: http://localhost:8080
+
+# Note: Frontend automatically connects to http://localhost:3000
 ```
 
 **Access Points:**
-- 🌐 Dashboard: http://localhost:8080
-- 📡 API Docs: http://localhost:8000/docs
-- ✅ Health Check: http://localhost:8000/health
+- 🌐 Dashboard: http://localhost:8080 or open frontend/index.html
+- 📡 API Docs: http://localhost:3000/docs
+- ✅ Health Check: http://localhost:3000/health
+- 🎨 Theme: Toggle between light/dark mode in top-right corner
 
 ---
 
@@ -154,16 +162,16 @@ python -m http.server 8080
 
 ```bash
 # Get statistics
-curl http://localhost:8000/summary
+curl http://localhost:3000/summary
 
 # Patient risk assessment
-curl http://localhost:8000/risk/P00001
+curl http://localhost:3000/risk/P00001
 
 # Wait time forecast
-curl "http://localhost:8000/wait-time-forecast?department=Emergency&hour=14&day_of_week=1"
+curl "http://localhost:3000/wait-time-forecast?department=Emergency&hour=14&day_of_week=1"
 
 # Predict custom risk
-curl -X POST http://localhost:8000/predict-risk \
+curl -X POST http://localhost:3000/predict-risk \
   -H "Content-Type: application/json" \
   -d '{"age": 65, "bmi": 32.5, "chronic_condition_count": 2, "total_visits": 8}'
 ```
@@ -271,10 +279,10 @@ firebase deploy --only hosting
 
 ```bash
 # Run backend locally
-python -m uvicorn backend.api:app --reload --port 8000
+python -m uvicorn backend.api:app --reload --port 3000
 ```
 
-**Access**: http://localhost:8000
+**Access**: http://localhost:3000
 
 ### Backend Cloud Deployment (Optional - Not Yet Implemented)
 
@@ -332,11 +340,13 @@ hospital-insights/
 
 | Issue | Solution |
 |-------|----------|
-| **API offline** | Run `python -m uvicorn backend.api:app --reload` |
+| **API offline** | Run `python -m uvicorn backend.api:app --reload --port 3000` |
 | **No data found** | Run `python scripts/run_pipeline.py` first |
 | **Model training errors** | Ensure scikit-learn is installed: `pip install scikit-learn` |
 | **CORS error** | Check `API_BASE_URL` in `frontend/dashboard.js` |
-| **Port in use** | Change port: `--port 8001` |
+| **Port in use** | Change port: `--port 5000` or `--port 8080` |
+| **Dark mode not working** | Clear browser cache and refresh (Ctrl+F5) |
+| **Charts not loading** | Check browser console for errors, verify API is running |
 
 ---
 
@@ -345,7 +355,7 @@ hospital-insights/
 - **Quick Start Guide**: See [QUICKSTART.md](QUICKSTART.md)
 - **Dashboard Guide**: See [ENHANCED_DASHBOARD_GUIDE.md](ENHANCED_DASHBOARD_GUIDE.md)
 - **Deployment Guide**: See [DEPLOYMENT.md](DEPLOYMENT.md)
-- **Interactive API Docs**: http://localhost:8000/docs
+- **Interactive API Docs**: http://localhost:3000/docs
 
 ---
 

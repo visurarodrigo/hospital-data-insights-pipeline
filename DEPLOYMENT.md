@@ -2,8 +2,8 @@
 
 ## Current Deployment Status
 
-✅ **Frontend**: Deployed on Firebase Hosting  
-🖥️ **Backend**: Running locally (not yet deployed to cloud)
+✅ **Frontend**: Deployed on Firebase Hosting (Modern SaaS UI with Dark Mode)  
+🖥️ **Backend**: Running locally on port 3000 (not yet deployed to cloud)
 
 ---
 
@@ -33,6 +33,14 @@
    ```
 
 Your frontend is live at: `https://hospital-insights-c9c40.web.app`
+
+**What's Deployed:**
+- Modern SaaS-style UI with design system
+- Dark mode support with theme toggle
+- Fully responsive layout (mobile/tablet/desktop)
+- Toast notifications and loading states
+- All 4 dashboard pages (Overview, OPD, Inpatient, AI Risk)
+- Interactive visualizations with Chart.js
 
 ---
 
@@ -89,6 +97,7 @@ gcloud run deploy hospital-api \
    ```javascript
    const API_BASE_URL = 'https://your-cloud-run-url.com';
    ```
+   (Currently set to: `http://localhost:3000` for local development)
 3. Redeploy frontend:
    ```bash
    firebase deploy --only hosting
@@ -190,9 +199,11 @@ firebase deploy && gcloud run deploy hospital-api --source .
 ## Troubleshooting
 
 **Frontend shows "API Offline"**
-- Check API_BASE_URL in dashboard.js
+- Check API_BASE_URL in dashboard.js (Line 11)
 - Verify Cloud Run service is running
-- Check CORS configuration
+- Check CORS configuration in backend/api.py
+- Look for red dot next to "API Status" in dashboard topbar
+- Check browser console (F12) for CORS errors
 
 **Cloud Run deployment fails**
 - Ensure Dockerfile is correct

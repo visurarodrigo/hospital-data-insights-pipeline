@@ -1,13 +1,14 @@
 /**
  * Hospital Data Insights Dashboard - Enhanced Version
  * Multi-page interactive analytics with AI-powered risk assessment
+ * Modern SaaS-style UI with dark mode, toasts, and loading states
  */
 
 // Configuration
 // IMPORTANT: Update this URL after deploying your backend API
 // For Railway: https://your-app.railway.app
 // For Google Cloud Run: https://hospital-api-xxxxx-uc.a.run.app
-const API_BASE_URL = 'http://localhost:8000';  // Change this to your deployed API URL
+const API_BASE_URL = 'http://localhost:3000';  // Change this to your deployed API URL
 
 // State
 let currentPage = 'overview';
@@ -22,6 +23,9 @@ let patientRiskCache = {};
 document.addEventListener('DOMContentLoaded', () => {
     console.log('🚀 Initializing Enhanced Hospital Insights Dashboard...');
     
+    // Initialize theme
+    initializeTheme();
+    
     // Initialize department filter
     selectedDepartments = [...allDepartments];
     initializeDepartmentFilter();
@@ -29,8 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Setup navigation
     setupNavigation();
     
-    // Setup filter toggle
-    setupFilterToggle();
+    // Setup mobile menu toggle
+    setupMobileMenu();
     
     // Check API and load data
     checkAPIStatus();
@@ -45,6 +49,88 @@ document.addEventListener('DOMContentLoaded', () => {
         loadAllPages();
     }, 300000);
 });
+
+/**
+ * Theme Management
+ */
+function initializeTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    applyTheme(savedTheme);
+    
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', toggleTheme);
+}
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.dataset.theme || 'light';
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    applyTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+}
+
+function applyTheme(theme) {
+    document.documentElement.dataset.theme = theme;
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.textContent = theme === 'light' ? '🌙' : '☀️';
+}
+
+/**
+ * Toast Notifications
+ */
+function showToast(message, type = 'info') {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    
+    const icons = {
+        success: '✅',
+        error: '❌',
+        warning: '⚠️',
+        info: 'ℹ️'
+    };
+    
+    toast.innerHTML = `
+        <span class="toast-icon">${icons[type] || icons.info}</span>
+        <span class="toast-message">${message}</span>
+        <button class="toast-close" onclick="this.parentElement.remove()">×</button>
+    `;
+    
+    container.appendChild(toast);
+    
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+        if (toast.parentElement) {
+            toast.remove();
+        }
+    }, 5000);
+}
+
+/**
+ * Mobile Menu Toggle
+ */
+function setupMobileMenu() {
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    
+    menuToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+    });
+    
+    overlay.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+    });
+    
+    // Close on navigation
+    document.querySelectorAll('.nav-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+        });
+    });
+}
 
 /**
  * Setup navigation between pages
@@ -101,16 +187,6 @@ function initializeDepartmentFilter() {
     });
     
     updateSelectionCount();
-}
-
-function setupFilterToggle() {
-    const toggle = document.getElementById('filterToggle');
-    const content = document.getElementById('filterContent');
-    
-    toggle.addEventListener('click', () => {
-        const isExpanded = content.classList.toggle('expanded');
-        toggle.querySelector('.toggle-icon').textContent = isExpanded ? '▲' : '▼';
-    });
 }
 
 function updateSelectionCount() {
@@ -179,17 +255,52 @@ async function checkAPIStatus() {
         statusDot.className = 'status-dot offline';
         statusText.textContent = 'API Offline';
         console.error('❌ API Status Check Failed:', error);
+        showToast('Unable to connect to API. Please check your connection.', 'error');
     }
+}
+
+/**
+ * Loading States Management
+ */
+function showLoadingState(elementIds) {
+    elementIds.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            const originalContent = element.innerHTML;
+            element.dataset.originalContent = originalContent;
+            
+            if (element.classList.contains('kpi-value')) {
+                element.innerHTML = '<div class="skeleton skeleton-value"></div>';
+            } else {
+                element.textContent = '...';
+            }
+            element.classList.add('loading');
+        }
+    });
+}
+
+function hideLoadingState(elementIds) {
+    elementIds.forEach(id => {
+        const element = document.getElementById(id);
+        if (element && element.classList.contains('loading')) {
+            element.classList.remove('loading');
+        }
+    });
 }
 
 /**
  * Load all pages (Overview data)
  */
 async function loadAllPages() {
+    const loadingIds = ['totalPatients', 'totalVisits', 'totalAdmissions', 'avgWaitTime', 'readmissionRate', 'totalRevenue'];
+    showLoadingState(loadingIds);
+    
     await Promise.all([
         loadOverviewPage(),
         loadBillingSummary()
     ]);
+    
+    hideLoadingState(loadingIds);
     
     document.getElementById('lastUpdated').textContent = 
         `Last updated: ${new Date().toLocaleTimeString()}`;
@@ -224,6 +335,7 @@ async function loadOverviewPage() {
         
     } catch (error) {
         console.error('Error loading overview:', error);
+        showToast('Error loading overview data', 'error');
     }
 }
 
@@ -262,14 +374,18 @@ async function loadOPDAnalytics() {
             datasets: [{
                 label: 'Avg Wait Time (min)',
                 data: deptWaitTimes,
-                backgroundColor: 'rgba(54, 162, 235, 0.7)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 2
+                backgroundColor: 'rgba(99, 102, 241, 0.7)',
+                borderColor: 'rgba(99, 102, 241, 1)',
+                borderWidth: 2,
+                borderRadius: 6
             }]
         }, {
             indexAxis: 'y',
             scales: {
-                x: { beginAtZero: true, title: { display: true, text: 'Minutes' } }
+                x: { 
+                    beginAtZero: true, 
+                    title: { display: true, text: 'Minutes' }
+                }
             }
         });
         
@@ -282,10 +398,11 @@ async function loadOPDAnalytics() {
             datasets: [{
                 label: 'Avg Wait Time',
                 data: hourWaitTimes,
-                borderColor: 'rgba(255, 99, 132, 1)',
-                backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                borderColor: 'rgba(239, 68, 68, 1)',
+                backgroundColor: 'rgba(239, 68, 68, 0.1)',
                 fill: true,
-                tension: 0.4
+                tension: 0.4,
+                borderWidth: 2
             }]
         });
         
@@ -299,7 +416,8 @@ async function loadOPDAnalytics() {
             datasets: [{
                 label: 'Visit Count',
                 data: dayVolumes,
-                backgroundColor: 'rgba(75, 192, 192, 0.7)'
+                backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                borderRadius: 6
             }]
         });
         
@@ -314,6 +432,7 @@ async function loadOPDAnalytics() {
         
     } catch (error) {
         console.error('Error loading OPD analytics:', error);
+        showToast('Error loading OPD analytics', 'error');
     }
 }
 
@@ -335,7 +454,8 @@ async function loadInpatientAnalytics() {
                 datasets: [{
                     label: 'Avg Length of Stay (days)',
                     data: wardLOS,
-                    backgroundColor: 'rgba(153, 102, 255, 0.7)'
+                    backgroundColor: 'rgba(168, 85, 247, 0.7)',
+                    borderRadius: 6
                 }]
             });
         }
@@ -350,7 +470,8 @@ async function loadInpatientAnalytics() {
                 datasets: [{
                     label: 'Readmission Rate (%)',
                     data: readmitRates,
-                    backgroundColor: 'rgba(255, 159, 64, 0.7)'
+                    backgroundColor: 'rgba(245, 158, 11, 0.7)',
+                    borderRadius: 6
                 }]
             }, {
                 indexAxis: 'y'
@@ -367,16 +488,18 @@ async function loadInpatientAnalytics() {
                 datasets: [{
                     label: 'Admissions',
                     data: admitCounts,
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(16, 185, 129, 1)',
+                    backgroundColor: 'rgba(16, 185, 129, 0.2)',
                     fill: true,
-                    tension: 0.4
+                    tension: 0.4,
+                    borderWidth: 2
                 }]
             });
         }
         
     } catch (error) {
         console.error('Error loading inpatient analytics:', error);
+        showToast('Error loading inpatient analytics', 'error');
     }
 }
 
@@ -755,7 +878,7 @@ function exportRiskToCSV() {
 }
 
 /**
- * Chart helper functions
+ * Chart helper functions - Enhanced with modern styling
  */
 function createOrUpdateChart(canvasId, type, data, options = {}) {
     const canvas = document.getElementById(canvasId);
@@ -768,19 +891,92 @@ function createOrUpdateChart(canvasId, type, data, options = {}) {
         charts[canvasId].destroy();
     }
     
-    // Default options
+    // Get computed styles for consistent theming
+    const styles = getComputedStyle(document.documentElement);
+    const textColor = styles.getPropertyValue('--text').trim();
+    const mutedColor = styles.getPropertyValue('--muted').trim();
+    const borderColor = styles.getPropertyValue('--border').trim();
+    
+    // Modern default options
     const defaultOptions = {
         responsive: true,
         maintainAspectRatio: true,
+        devicePixelRatio: window.devicePixelRatio || 2,
         plugins: {
             legend: {
                 display: true,
-                position: type === 'doughnut' ? 'right' : 'top'
+                position: window.innerWidth < 768 ? 'bottom' : (type === 'doughnut' ? 'right' : 'top'),
+                labels: {
+                    font: {
+                        family: styles.getPropertyValue('--font-sans').trim(),
+                        size: 12
+                    },
+                    color: textColor,
+                    padding: 15,
+                    usePointStyle: true
+                }
+            },
+            tooltip: {
+                backgroundColor: styles.getPropertyValue('--surface').trim(),
+                titleColor: textColor,
+                bodyColor: textColor,
+                borderColor: borderColor,
+                borderWidth: 1,
+                padding: 12,
+                cornerRadius: 8,
+                titleFont: {
+                    size: 13,
+                    weight: '600'
+                },
+                bodyFont: {
+                    size: 12
+                },
+                callbacks: {
+                    label: function(context) {
+                        let label = context.dataset.label || '';
+                        if (label) {
+                            label += ': ';
+                        }
+                        if (context.parsed.y !== null) {
+                            label += context.parsed.y.toLocaleString();
+                        } else if (context.parsed !== null) {
+                            label += context.parsed.toLocaleString();
+                        }
+                        return label;
+                    }
+                }
             }
-        }
+        },
+        scales: type !== 'doughnut' && type !== 'pie' ? {
+            x: {
+                grid: {
+                    display: false,
+                    color: borderColor
+                },
+                ticks: {
+                    font: {
+                        size: 11
+                    },
+                    color: mutedColor
+                }
+            },
+            y: {
+                grid: {
+                    color: borderColor,
+                    drawBorder: false
+                },
+                ticks: {
+                    font: {
+                        size: 11
+                    },
+                    color: mutedColor
+                }
+            }
+        } : {}
     };
     
-    const mergedOptions = { ...defaultOptions, ...options };
+    // Deep merge options
+    const mergedOptions = deepMerge(defaultOptions, options);
     
     // Create new chart
     charts[canvasId] = new Chart(ctx, {
@@ -788,6 +984,29 @@ function createOrUpdateChart(canvasId, type, data, options = {}) {
         data: data,
         options: mergedOptions
     });
+}
+
+// Helper function for deep merging objects
+function deepMerge(target, source) {
+    const output = Object.assign({}, target);
+    if (isObject(target) && isObject(source)) {
+        Object.keys(source).forEach(key => {
+            if (isObject(source[key])) {
+                if (!(key in target)) {
+                    Object.assign(output, { [key]: source[key] });
+                } else {
+                    output[key] = deepMerge(target[key], source[key]);
+                }
+            } else {
+                Object.assign(output, { [key]: source[key] });
+            }
+        });
+    }
+    return output;
+}
+
+function isObject(item) {
+    return item && typeof item === 'object' && !Array.isArray(item);
 }
 
 function updateMonthlyTrendsChart(trends) {
@@ -799,10 +1018,11 @@ function updateMonthlyTrendsChart(trends) {
         datasets: [{
             label: 'Total Visits',
             data: visitCounts,
-            borderColor: 'rgba(75, 192, 192, 1)',
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(99, 102, 241, 1)',
+            backgroundColor: 'rgba(99, 102, 241, 0.1)',
             fill: true,
-            tension: 0.4
+            tension: 0.4,
+            borderWidth: 2
         }]
     });
 }
@@ -815,23 +1035,25 @@ function updateDepartmentChart(departments) {
         labels: labels,
         datasets: [{
             data: visitCounts,
-            backgroundColor: generateColors(labels.length)
+            backgroundColor: generateColors(labels.length),
+            borderWidth: 2,
+            borderColor: getComputedStyle(document.documentElement).getPropertyValue('--surface').trim()
         }]
     });
 }
 
 function generateColors(count) {
     const colors = [
-        'rgba(255, 99, 132, 0.7)',
-        'rgba(54, 162, 235, 0.7)',
-        'rgba(255, 206, 86, 0.7)',
-        'rgba(75, 192, 192, 0.7)',
-        'rgba(153, 102, 255, 0.7)',
-        'rgba(255, 159, 64, 0.7)',
-        'rgba(199, 199, 199, 0.7)',
-        'rgba(83, 102, 255, 0.7)',
-        'rgba(255, 99, 255, 0.7)',
-        'rgba(99, 255, 132, 0.7)'
+        'rgba(99, 102, 241, 0.8)',    // Indigo
+        'rgba(16, 185, 129, 0.8)',    // Green
+        'rgba(245, 158, 11, 0.8)',    // Amber
+        'rgba(239, 68, 68, 0.8)',     // Red
+        'rgba(168, 85, 247, 0.8)',    // Purple
+        'rgba(59, 130, 246, 0.8)',    // Blue
+        'rgba(236, 72, 153, 0.8)',    // Pink
+        'rgba(20, 184, 166, 0.8)',    // Teal
+        'rgba(251, 146, 60, 0.8)',    // Orange
+        'rgba(132, 204, 22, 0.8)'     // Lime
     ];
     
     return colors.slice(0, count);

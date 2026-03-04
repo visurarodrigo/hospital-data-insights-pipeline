@@ -1,8 +1,19 @@
-# 🏥 Enhanced Hospital Data Insights Dashboard - Quick Start Guide
+# 🏥 Enhanced Hospital Data Insights Dashboard - User Guide
 
 ## 📌 What's New
 
-Your dashboard has been completely rebuilt with advanced multi-page analytics and AI-powered clinical decision support!
+Your dashboard has been completely redesigned with a **modern SaaS-style interface** featuring advanced multi-page analytics, dark mode, and AI-powered clinical decision support!
+
+### 🎨 Design System Highlights
+
+**Modern SaaS Aesthetics:**
+- 🌓 **Dark Mode Support** - Toggle between light and dark themes with persistent preference
+- 📱 **Fully Responsive** - Optimized for desktop, tablet, and mobile devices
+- 🔔 **Toast Notifications** - Real-time feedback for all user actions
+- ⚡ **Loading States** - Skeleton loaders show progress during data fetching
+- 🎨 **Design Tokens** - Consistent spacing, colors, typography, and shadows
+- 📊 **Interactive Components** - Hover effects, transitions, and modern UI patterns
+- 🎯 **Premium Feel** - Clean, professional interface with attention to detail
 
 ## ✨ Dashboard Features
 
@@ -14,26 +25,42 @@ Your dashboard has been completely rebuilt with advanced multi-page analytics an
 3. **🛏️ Inpatient & Ward Analytics** - Ward-level insights and admission trends
 4. **🤖 AI Risk Assessment** - Advanced ML-powered patient risk stratification
 
+**Modern Navigation:**
+- Sidebar navigation with icon buttons and active state highlighting
+- Smooth page transitions with fade effects
+- Mobile-responsive with hamburger menu
+- Persistent navigation state across sessions
+
 **Enhanced Navigation:**
-- Compact page navigation with visual highlighting
-- Smart department filter with checkbox selection
-- Session persistence for filter preferences
-- Real-time selection feedback
+- 🎨 **Topbar** - Real-time API status, last updated time, theme toggle
+- 🔍 **Toolbar** - Smart department filter with chip-style multi-select
+- 📡 **Status Indicators** - Color-coded API health (green = healthy, red = offline)
+- 🕒 **Timestamps** - Auto-updating relative time ("2 minutes ago")
+- 💾 **Session Persistence** - Filter preferences saved in localStorage
 
 ### 📊 Overview Dashboard
 
-**6 Gradient KPI Cards:**
+**6 Modern KPI Cards:**
 - 👥 Total Patients in System
 - 🏥 OPD Visit Volumes
-- 🛏️ Inpatient Admissions
+- 🛌 Inpatient Admissions
 - ⏱️ Average Wait Times
 - 🔄 30-Day Readmission Rates
 - 💰 Total Billing Revenue
 
+**Card Features:**
+- Gradient backgrounds with hover effects
+- Animated loading skeletons
+- Icon indicators for each metric
+- Responsive grid layout
+- Clean typography hierarchy
+
 **Interactive Visualizations:**
-- Monthly visit trends line chart
+- Monthly visit trends line chart with modern color palette
 - Department distribution doughnut chart
 - Auto-refresh every 5 minutes
+- Smooth animations and transitions
+- Responsive chart sizing
 
 ### 🏥 OPD (Outpatient) Analytics
 
@@ -161,21 +188,31 @@ All patients displayed with:
 python scripts/run_pipeline.py
 
 # Start API server (if not already running)
-python -m uvicorn backend.api:app --reload
+python -m uvicorn backend.api:app --reload --port 3000
 ```
 
 ### Step 2: Open the Enhanced Dashboard
 
-Open one of these files in your browser:
-- **Enhanced Version**: `frontend/index_enhanced.html` ⭐ (NEW)
-- Original Version: `frontend/index.html`
+Open `frontend/index.html` in your browser
+
+**Quick Access:**
+- 🖥️ Double-click the HTML file
+- 🌐 Or serve with: `python -m http.server 8080` in frontend folder
+
+**First-Time Setup:**
+1. Dashboard opens in light mode by default
+2. Try the 🌓 theme toggle in top-right corner
+3. Your preference is saved automatically
+4. Green dot indicates API is connected
 
 ### Step 3: Navigate the Dashboard
 
-1. **Select a Page** using the navigation tabs at the top
-2. **Filter by Department** using the collapsible filter section
-3. **Explore Visualizations** - all charts are interactive
-4. **Assess Patient Risk** on the AI Risk Assessment page
+1. **Select a Page** using the sidebar navigation (Overview/OPD/Inpatient/AI Risk)
+2. **Toggle Theme** using the 🌓 button in top-right corner
+3. **Filter by Department** using chip-style buttons in the toolbar
+4. **Explore Visualizations** - all charts are interactive with hover tooltips
+5. **Monitor API Status** - watch the colored dot next to "API Status" in topbar
+6. **Check Updates** - see "Last updated" timestamp in topbar
 
 ### Step 4: AI Risk Assessment Workflow
 
@@ -293,13 +330,15 @@ Returns: Revenue metrics by department
 ## 🛠️ Troubleshooting
 
 **Dashboard doesn't load?**
-- Check API server is running: http://localhost:8000/health
-- Verify file path to index_enhanced.html
-- Clear browser cache
+- Check API server is running: http://localhost:3000/health
+- Verify file path to index.html
+- Clear browser cache (Ctrl+Shift+Delete)
+- Check browser console (F12) for errors
 
 **No data showing?**
 - Run: `python scripts/run_pipeline.py`
-- Restart API server
+- Restart API server: `python -m uvicorn backend.api:app --reload --port 3000`
+- Watch for toast notifications indicating errors
 
 **Risk predictions not working?**
 - Ensure models are trained (pipeline completed)
@@ -312,6 +351,10 @@ Returns: Revenue metrics by department
 - Population baseline is approximate (35% average risk)
 - Export functionality works in modern browsers only
 - Department filter affects Overview and OPD pages only
+- **Dark mode preference is saved in browser localStorage**
+- **Toast notifications appear in bottom-right corner**
+- **Loading skeletons show while data is being fetched**
+- **Mobile menu accessible via hamburger icon on small screens**
 
 ## 🎓 Training Resources
 
@@ -329,4 +372,36 @@ Returns: Revenue metrics by department
 
 **Congratulations! 🎉** You now have a state-of-the-art healthcare analytics platform with AI-powered clinical decision support!
 
-For questions or issues, please review the API documentation at: http://localhost:8000/docs
+For questions or issues, please review the API documentation at: http://localhost:3000/docs
+
+## 🎨 UI/UX Features Summary
+
+**Design System:**
+- 70+ CSS custom properties for consistent theming
+- Light and dark color palettes
+- 8-point spacing scale (4px, 8px, 16px, 24px, 32px, 48px, 64px, 96px)
+- Typography scale with system font stack
+- Shadow system for depth (sm, md, lg, xl)
+- Border radius tokens (sm: 6px, md: 8px, lg: 12px, xl: 16px, 2xl: 24px)
+
+**Interactive Components:**
+- Buttons with hover/active states
+- Cards with shadow elevation
+- Badges for status indicators
+- Toast notifications (success, error, warning, info)
+- Loading skeletons for async content
+- Form controls with focus states
+- Tables with hover rows
+
+**Responsive Breakpoints:**
+- Mobile: < 640px
+- Tablet: 640px - 1024px
+- Desktop: > 1024px
+
+**Accessibility:**
+- Semantic HTML structure
+- ARIA labels and roles
+- Keyboard navigation support
+- Focus indicators
+- Color contrast compliant
+- Reduced motion support
