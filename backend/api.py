@@ -76,6 +76,19 @@ async def startup_event():
     print("🚀 STARTING HOSPITAL INSIGHTS API")
     print("="*60 + "\n")
     
+    # Check if data needs to be generated
+    db_path = 'backend/data/hospital_warehouse.db'
+    if not os.path.exists(db_path):
+        print("⚠️  Data not found - generating on first startup...")
+        try:
+            import sys
+            sys.path.append('.')
+            from scripts.run_pipeline import run_complete_pipeline
+            run_complete_pipeline()
+            print("✅ Data generation complete")
+        except Exception as e:
+            print(f"❌ Failed to generate data: {e}")
+    
     # Initialize prediction service
     try:
         prediction_service = PredictionService(model_dir='backend/models')
@@ -86,7 +99,6 @@ async def startup_event():
     
     # Initialize DuckDB connection
     try:
-        db_path = 'backend/data/hospital_warehouse.db'
         if os.path.exists(db_path):
             db_connection = duckdb.connect(db_path, read_only=True)
             print("✅ Database connection established")
