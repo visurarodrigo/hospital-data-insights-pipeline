@@ -13,6 +13,12 @@ RUN pip install --no-cache-dir -r backend/requirements.txt
 # Copy entire project structure
 COPY . .
 
+# Create necessary directories
+RUN mkdir -p backend/data/raw backend/data/processed backend/models
+
+# Generate synthetic data and build warehouse
+RUN python scripts/run_pipeline.py
+
 # Expose port
 EXPOSE 8080
 
