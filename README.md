@@ -1,403 +1,203 @@
+﻿<div align="center">
+
 # 🏥 Hospital Data Insights Pipeline
 
-A production-ready healthcare analytics platform featuring **Large Tabular Model (LTM)** for AI-powered clinical decision support, interactive dashboards, ETL pipeline, DuckDB data warehouse, and state-of-the-art machine learning risk predictions.
+### Production-Ready Healthcare Analytics Platform with AI-Powered Risk Assessment
 
-**🌐 Live Demo**: https://hospital-insights-c9c40.web.app  
-**🔗 API Backend**: https://hospital-data-insights-pipeline.onrender.com  
-**📦 Source Code**: https://github.com/visurarodrigo/hospital-data-insights-pipeline
+[![Live Demo](https://img.shields.io/badge/Demo-Live-brightgreen?style=for-the-badge&logo=firefox)](https://hospital-insights-c9c40.web.app)
+[![API](https://img.shields.io/badge/API-Active-blue?style=for-the-badge&logo=fastapi)](https://hospital-data-insights-pipeline.onrender.com)
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
 
-*✨ Fully deployed full-stack application - ready to showcase!*
+**Full-stack healthcare analytics platform featuring Large Tabular Model (LTM) for AI-powered clinical decision support, interactive dashboards, ETL pipeline, and DuckDB data warehouse.**
 
----
+[Live Demo](https://hospital-insights-c9c40.web.app) • [API Docs](https://hospital-data-insights-pipeline.onrender.com/docs) • [Documentation](DEPLOYMENT.md)
 
-## 📋 Table of Contents
-
-- [Features](#-features)
-- [Dashboard Previews](#-dashboard-previews)
-- [Quick Start](#-quick-start)
-- [Architecture](#️-architecture)
-- [API Documentation](#-api-documentation)
-- [Machine Learning](#-machine-learning)
-- [Deployment](#-deployment)
+</div>
 
 ---
 
-## ✨ Features
+## ✨ Highlights
 
-**Data Engineering**
-- 🔄 Synthetic data generation (5,000 patients, 15,000+ visits)
-- 🛠️ ETL pipeline with data validation and cleaning
-- 🗄️ DuckDB data warehouse (star schema)
-- 📊 Real-time analytics with SQL queries
+- 🧠 **Large Tabular Foundation Model** - State-of-the-art AI with 97.9% accuracy for readmission risk prediction
+- 📊 **Interactive Analytics Dashboard** - 4-page SaaS-style UI with dark mode, real-time visualizations, and responsive design
+- 🏗️ **Complete Data Pipeline** - ETL, DuckDB warehouse (star schema), 5K patients, 15K visits
+- 🚀 **Production Deployed** - Full-stack application on Firebase & Render with auto-scaling
+- 🎯 **RESTful API** - 14 FastAPI endpoints with automatic documentation
+- 💡 **Smart Risk Scoring** - AI-powered patient risk assessment with clinical recommendations
 
-**Machine Learning - Large Tabular Model (LTM)**
-- 🔬 State-of-the-art Large Tabular Foundation Model integration
-- 🎯 Readmission risk prediction with foundation model (97.9% accuracy)
-- ⏱️ Wait time forecasting by department/hour
-- 🤖 AI-powered clinical recommendations
-- 🔄 Intelligent hybrid ML approach (LTM + Traditional ML)
-- 📈 Comprehensive model evaluation metrics
+## 🖼️ Dashboard Preview
 
-**Interactive Dashboard**
-- 📊 4-page multi-view analytics (Overview, OPD, Inpatient, AI Risk)
-- 📈 12+ interactive visualizations (Chart.js)
-- 🎨 Modern SaaS-style UI with design system
-- 🌓 Dark mode with theme toggle
-- 🔔 Toast notifications for user feedback
-- 💾 CSV export for risk stratification
-- 🔍 Smart filters and real-time updates
-- 📱 Fully responsive (mobile/tablet/desktop)
-- ⚡ Loading states with skeleton loaders
+<div align="center">
 
-## 📸 Dashboard Previews
+| Overview | Risk Assessment |
+|----------|-----------------|
+| ![Overview](frontend/Screenshots/Overview.png) | ![Risk](frontend/Screenshots/Risk.png) |
+| Modern SaaS interface with KPI cards & analytics | AI-powered patient risk scoring with recommendations |
 
-### Overview Dashboard
-![Overview Dashboard](frontend/Screenshots/Overview.png)
-*Modern SaaS interface with 6 KPI cards showing patients, visits, admissions, wait time, readmission rate, and revenue. Features dark mode toggle, real-time API status, and interactive charts with monthly trends and department distribution*
-
-### OPD Analytics
-![OPD Analytics](frontend/Screenshots/OPD.png)
-*Outpatient department analytics with clean, modern design. Wait time analysis by department, hour of day, and day of week patterns with responsive layout and loading states*
-
-### Inpatient & Ward Analytics
-![Inpatient Analytics](frontend/Screenshots/Inpatient.png)
-*Ward-level analysis with modern card-based layout. Shows average length of stay, readmission rates by diagnosis, and monthly admission trends with interactive filtering*
-
-### AI-Powered Patient Risk Assessment
-![Risk Assessment](frontend/Screenshots/Risk.png)
-*Premium SaaS-style risk assessment interface with interactive patient risk scoring, clinical recommendations, risk factor analysis, and population-level risk stratification with CSV export. Features smart search and advanced filtering*
-
----
+</div>
 
 ## 🏗️ Architecture
 
 ```
 ┌─────────────────────────────────────────────┐
 │   Frontend (HTML/CSS/JS + Chart.js)        │
-│   - Overview, OPD, Inpatient, AI Risk      │
+│   Modern SaaS UI with Dark Mode            │
 └───────────────────┬─────────────────────────┘
                     │ REST API
 ┌───────────────────▼─────────────────────────┐
 │   FastAPI Backend (14 Endpoints)           │
-│   - Analytics Engine                        │
-│   - ML Prediction Service                   │
+│   Analytics Engine + ML Service            │
 └───────────────────┬─────────────────────────┘
                     │
 ┌───────────────────▼─────────────────────────┐
-│   ML Models (Hybrid LTM Approach)          │
-│   - LTM Classifier (97.9% accuracy)         │
-│   - Regressor (Wait Time forecasting)       │
-└─────────────────────────────────────────────┘
+│   ML Models (Hybrid LTM)                   │
+│   LTM: 97.9% | Regressor: RMSE 19.3min    │
+└───────────────────┬─────────────────────────┘
                     │
 ┌───────────────────▼─────────────────────────┐
-│   DuckDB Data Warehouse (Star Schema)      │
-│   - fact_visits, dim_patient, dim_dept     │
+│   DuckDB Warehouse (Star Schema)           │
+│   5K Patients | 15K Visits                 │
 └─────────────────────────────────────────────┘
 ```
 
-**Tech Stack**
-- **Backend**: Python 3.10+, FastAPI, Uvicorn, Pandas, Scikit-learn
-- **Database**: DuckDB (SQL analytics), Parquet (storage)
-- **Frontend**: Vanilla JavaScript, Chart.js, HTML5/CSS3, Modern Design System
-- **UI/UX**: CSS Custom Properties, Dark Mode, Responsive Design, Toast Notifications
-- **ML**: TabPFN (Large Tabular Foundation Model - Primary), Random Forest (Fallback), Feature Engineering
-
----
+**Tech Stack:** Python • FastAPI • DuckDB • Pandas • Scikit-learn • TabPFN • Chart.js • Firebase • Render
 
 ## 🚀 Quick Start
 
-### Installation
-
 ```bash
 # 1. Install dependencies
-cd backend
-pip install -r requirements.txt
-```
+pip install -r backend/requirements.txt
 
-### Running Locally
-
-```bash
-# 1. Generate data & train models (~30 seconds)
+# 2. Generate data & train models
 python scripts/run_pipeline.py
 
-# 2. Start API server
+# 3. Start API server
 python -m uvicorn backend.api:app --reload --port 3000
 
-# 3. Open frontend
-# Option A: Double-click frontend/index.html
-# Option B: Serve with Python
-cd frontend
-python -m http.server 8080
-# Visit: http://localhost:8080
-
-# Note: Frontend automatically connects to http://localhost:3000
+# 4. Open frontend/index.html in browser
 ```
 
-**Access Points:**
-- 🌐 Dashboard: http://localhost:8080 or open frontend/index.html
-- 📡 API Docs: http://localhost:3000/docs
-- ✅ Health Check: http://localhost:3000/health
-- 🎨 Theme: Toggle between light/dark mode in top-right corner
+**Access:** Dashboard at rontend/index.html • API docs at http://localhost:3000/docs
 
----
+## 🤖 Machine Learning
 
-## 🔌 API Documentation
+### Large Tabular Foundation Model (LTM)
 
-### Key Endpoints
+Innovative foundation model approach similar to GPT for tabular data:
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/health` | GET | Health check with system status |
-| `/summary` | GET | Overall KPI statistics |
-| `/opd-analytics` | GET | OPD wait times & patterns |
-| `/inpatient-analytics` | GET | Ward LOS & readmissions |
-| `/patients/list` | GET | Patient list (query: `?limit=1000`) |
-| `/risk/{patient_id}` | GET | Individual risk assessment |
-| `/predict-risk` | POST | Custom risk prediction |
-| `/wait-time-forecast` | GET | Department wait time forecast |
-| `/metrics` | GET | ML model performance |
-
-**Interactive API Docs**: http://localhost:8000/docs
-
-### Example Usage
-
-```bash
-# Get statistics
-curl http://localhost:3000/summary
-
-# Patient risk assessment
-curl http://localhost:3000/risk/P00001
-
-# Wait time forecast
-curl "http://localhost:3000/wait-time-forecast?department=Emergency&hour=14&day_of_week=1"
-
-# Predict custom risk
-curl -X POST http://localhost:3000/predict-risk \
-  -H "Content-Type: application/json" \
-  -d '{"age": 65, "bmi": 32.5, "chronic_condition_count": 2, "total_visits": 8}'
-```
-
----
-
-## 🤖 Machine Learning - Large Tabular Model (LTM)
-
-### 🎯 Primary Innovation: Large Tabular Foundation Model
-
-This project leverages a **Large Tabular Model (LTM)** - a state-of-the-art foundation model that uses in-context learning for tabular data, similar to how GPT works for language tasks.
-
-**Why LTM is Revolutionary:**
-- 🧠 **Foundation Model**: Pre-trained on millions of synthetic tabular datasets
-- ⚡ **Zero Hyperparameter Tuning**: No manual configuration needed
-- 🎯 **In-Context Learning**: Learns from your data without traditional training
-- 🏆 **Superior Performance**: Often outperforms tuned Random Forests and Gradient Boosting
-- 🔬 **Cutting-Edge Research**: Based on Transformer architecture for tabular data
-
-### Readmission Risk Prediction
-
-**Approach**: Hybrid LTM Architecture  
-**Dataset**: 5,000 patients with 15,000+ clinical visits
-
-**Intelligent Model Selection:**
-```
-   LTM (Primary) → If dataset exceeds limit → Traditional ML (Fallback)
-        ↓                                              ↓
-  In-context learning                        Ensemble classifier
-  (Foundation Model)                         (Classical ML)
-```
-
-**Model Performance:**
-- **Accuracy**: 97.9%
-- **Precision**: 97.9%
-- **Recall**: 100%
-- **ROC-AUC**: 97.87%
-- **Features**: Age, BMI, chronic conditions, visit history, smoking status, previous admissions
-- **Output**: Risk score (0-100%), risk level, personalized clinical recommendations
-
-**LTM Implementation:**
-- Intelligent fallback mechanism for large datasets
-- Maintains high accuracy across all dataset sizes
-- Zero-configuration foundation model approach
-
-**Risk Stratification**:
-- 🔴 **High (≥60%)**: Discharge planning within 24h, follow-up in 3 days
-- 🟡 **Medium (35-60%)**: Follow-up in 7 days, medication reconciliation
-- 🟢 **Low (<35%)**: Standard discharge, routine follow-up
-
-### Wait Time Forecasting
-
-**Model**: Random Forest Regressor
-- **RMSE**: ~19.3 minutes
-- **Features**: Hour of day, day of week, department, triage level, historical patterns
-- **Use Case**: Predict wait times by department/hour for resource planning
+- 🧠 **Pre-trained** on millions of synthetic datasets
+- ⚡ **Zero hyperparameter tuning** required
+- 🎯 **In-context learning** without traditional training
+- 🔄 **Intelligent hybrid** with automatic fallback to traditional ML
 
 ### Model Performance
 
-```python
-Classification Metrics (Readmission):
-  Accuracy:  97.9%
-  Precision: 97.9%
-  Recall:    100%
-  ROC-AUC:   97.87%
+| Metric | Readmission Risk | Wait Time |
+|--------|-----------------|-----------|
+| **Accuracy** | 97.9% | - |
+| **Precision** | 97.9% | - |
+| **Recall** | 100% | - |
+| **ROC-AUC** | 97.87% | - |
+| **RMSE** | - | 19.3 min |
+| **R²** | - | 0.18 |
 
-Regression Metrics (Wait Time):
-  RMSE: 19.29 minutes
-  MAE:  15.27 minutes
-  R²:   0.1833
-```
+**Features:** Age, BMI, chronic conditions, visit history, smoking status, admissions  
+**Output:** Risk score (0-100%), risk level, clinical recommendations
 
-Access metrics via API: `GET /metrics`
+## 📡 API Endpoints
 
-### 🔬 LTM vs Traditional ML
+| Endpoint | Description |
+|----------|-------------|
+| GET /summary | Overall KPI statistics |
+| GET /opd-analytics | Outpatient wait times & patterns |
+| GET /inpatient-analytics | Ward LOS & readmissions |
+| GET /risk/{patient_id} | Individual risk assessment |
+| POST /predict-risk | Custom risk prediction |
+| GET /metrics | ML model performance |
 
-| Feature | LTM (Foundation Model) | Traditional ML (Fallback) |
-|---------|------------------------|----------------------------|
-| **Type** | Foundation Model | Ensemble Classifier |
-| **Training** | Pre-trained (zero-shot) | Task-specific training |
-| **Hyperparameters** | None needed | Manual tuning required |
-| **Approach** | In-context learning | Statistical modeling |
-| **Innovation Level** | 🔬 Cutting-edge research | ✅ Industry standard |
+**Interactive Docs:** [Live API Documentation](https://hospital-data-insights-pipeline.onrender.com/docs)
 
-**Our Hybrid LTM Approach:**  
-The system intelligently leverages Large Tabular Model for foundation model capabilities and automatically falls back to traditional ML for large-scale production datasets, ensuring **both innovation and scalability**.
+## 🎨 Features
 
----
+**Data Engineering**
+- ETL pipeline with validation & cleaning
+- DuckDB data warehouse (star schema)
+- Synthetic data generation (5K patients, 15K visits)
+
+**Machine Learning**
+- Large Tabular Foundation Model (primary)
+- Random Forest classifier (fallback)
+- 97.9% accuracy for readmission prediction
+- Wait time forecasting by department
+
+**Dashboard**
+- 4-page analytics (Overview, OPD, Inpatient, AI Risk)
+- 12+ interactive Chart.js visualizations
+- Dark mode with theme toggle
+- Fully responsive design
+- CSV export for risk stratification
+- Real-time API status monitoring
 
 ## 🌐 Deployment
 
-### ✅ Full-Stack Deployed Application
+**Live Application**
 
-**🎨 Frontend (Firebase Hosting)**  
-Live URL: https://hospital-insights-c9c40.web.app  
-- Modern SaaS UI with dark mode
-- Fully responsive design
-- Real-time data visualizations
+- **Frontend:** https://hospital-insights-c9c40.web.app (Firebase)
+- **Backend:** https://hospital-data-insights-pipeline.onrender.com (Render)
 
-**🚀 Backend API (Render.com)**  
-Live URL: https://hospital-data-insights-pipeline.onrender.com  
-- RESTful API with FastAPI
-- Automatic data generation on startup
-- ML-powered risk predictions
-- Interactive API docs: https://hospital-data-insights-pipeline.onrender.com/docs
+**Deployment Stack:** Docker • Firebase Hosting • Render.com • GitHub Actions
 
-**💡 Note for Recruiters**: The free tier backend may take 15-20 seconds on first load (cold start). After that, it's instant!
+See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment guide.
 
-### Redeploy Instructions
-
-**Frontend**:
-```bash
-firebase deploy --only hosting
-```
-
-**Backend**: Push to GitHub main branch - auto-deploys via Render
-```bash
-git push origin main
-```
-
-### Local Development
-
-**Backend**:
-```bash
-# Generate data and run locally
-python scripts/run_pipeline.py
-python -m uvicorn backend.api:app --reload --port 3000
-```
-
-**Frontend**: Open `frontend/index.html` in browser or use Live Server
-
-For detailed deployment guide, see [DEPLOYMENT.md](DEPLOYMENT.md)
-
-**Option 2: Google Cloud Run**
-```bash
-gcloud run deploy hospital-api \
-  --source . \
-  --region us-central1 \
-  --allow-unauthenticated \
-  --port 8080
-```
-
-**Note**: After backend deployment, update API URL in `frontend/dashboard.js`:
-```javascript
-const API_BASE_URL = 'https://your-deployed-api-url.com';
-```
-
----
-
-## 📊 Project Structure
+## 📂 Project Structure
 
 ```
-hospital-insights/
+hospital-data-insights-pipeline/
 ├── backend/
-│   ├── api.py                    # FastAPI app (14 endpoints)
-│   ├── analytics/
-│   │   ├── data_generator.py     # Synthetic data generation
-│   │   ├── etl.py                # ETL pipeline
-│   │   ├── models.py             # ML training
-│   │   ├── predict.py            # Prediction service
-│   │   └── evaluation.py         # Model evaluation
-│   ├── warehouse/
-│   │   └── build_db.py           # DuckDB warehouse
-│   ├── data/                     # Generated data
-│   └── models/                   # Trained models
+│   ├── api.py                 # FastAPI application
+│   ├── analytics/             # ML models & data processing
+│   ├── warehouse/             # DuckDB warehouse builder
+│   └── data/                  # Generated data & models
 ├── frontend/
-│   ├── index.html                # Multi-page dashboard
-│   ├── dashboard.js              # Dashboard logic
-│   └── styles.css                # Styling
-└── scripts/
-    └── run_pipeline.py           # Pipeline runner
+│   ├── index.html             # Multi-page dashboard
+│   ├── dashboard.js           # Interactive visualizations
+│   └── styles.css             # Modern SaaS design
+├── scripts/
+│   └── run_pipeline.py        # End-to-end data pipeline
+├── Dockerfile                 # Container configuration
+└── firebase.json              # Frontend hosting config
 ```
 
----
+## 🎯 Use Cases
 
-## 🐛 Troubleshooting
+- **Hospital Administrators:** Real-time dashboard for operational insights
+- **Clinical Staff:** AI-powered risk assessment for discharge planning
+- **Care Coordinators:** Identify high-risk patients for proactive intervention
+- **Data Scientists:** Foundation model approach for healthcare analytics
 
-| Issue | Solution |
-|-------|----------|
-| **API offline** | Run `python -m uvicorn backend.api:app --reload --port 3000` |
-| **No data found** | Run `python scripts/run_pipeline.py` first |
-| **Model training errors** | Ensure scikit-learn is installed: `pip install scikit-learn` |
-| **CORS error** | Check `API_BASE_URL` in `frontend/dashboard.js` |
-| **Port in use** | Change port: `--port 5000` or `--port 8080` |
-| **Dark mode not working** | Clear browser cache and refresh (Ctrl+F5) |
-| **Charts not loading** | Check browser console for errors, verify API is running |
+## 📚 Documentation
 
----
-
-## 📚 Additional Resources
-
-- **Quick Start Guide**: See [QUICKSTART.md](QUICKSTART.md)
-- **Dashboard Guide**: See [ENHANCED_DASHBOARD_GUIDE.md](ENHANCED_DASHBOARD_GUIDE.md)
-- **Deployment Guide**: See [DEPLOYMENT.md](DEPLOYMENT.md)
-- **Interactive API Docs**: http://localhost:3000/docs
-
----
-
-## 🎓 Key Learnings
-
-This project demonstrates:
-- ✅ End-to-end data pipeline architecture
-- ✅ ETL best practices with validation
-- ✅ Star schema data warehouse design
-- 🔬 **Large Tabular Model (LTM) integration**
-- ✅ Hybrid LTM approach (Foundation Model + Traditional ML)
-- ✅ RESTful API development
-- ✅ Interactive data visualization
-- ✅ Healthcare analytics & clinical decision support
-
----
-
-## 📝 License
-
-Educational and demonstration purposes.
-
----
+- [Quick Start Guide](QUICKSTART.md)
+- [Deployment Guide](DEPLOYMENT.md)
+- [Dashboard Guide](ENHANCED_DASHBOARD_GUIDE.md)
 
 ## 🤝 Contributing
 
-Contributions welcome! Please fork the repository and submit a pull request.
+This is a portfolio project demonstrating full-stack data science and software engineering skills. Feel free to fork and adapt for your own use cases.
+
+## 📄 License
+
+MIT License - See [LICENSE](LICENSE) file for details
 
 ---
 
+<div align="center">
+
 **Built with ❤️ for Healthcare Analytics**
 
-*Repository*: https://github.com/visurarodrigo/hospital-data-insights-pipeline  
-*Last Updated*: March 2026
+⭐ Star this repo if you find it useful!
+
+[Report Bug](https://github.com/visurarodrigo/hospital-data-insights-pipeline/issues) • [Request Feature](https://github.com/visurarodrigo/hospital-data-insights-pipeline/issues)
+
+</div>
