@@ -30,10 +30,21 @@
 
 <div align="center">
 
-| Overview | Risk Assessment |
-|----------|-----------------|
-| ![Overview](frontend/Screenshots/Overview.png) | ![Risk](frontend/Screenshots/Risk.png) |
-| Modern SaaS interface with KPI cards & analytics | AI-powered patient risk scoring with recommendations |
+### Overview Dashboard
+![Overview Dashboard](frontend/Screenshots/Overview.png)
+*Real-time KPI cards, monthly trends, and department analytics with dark mode support*
+
+### OPD Analytics
+![OPD Analytics](frontend/Screenshots/OPD.png)
+*Outpatient wait time analysis by department, hour, and day of week patterns*
+
+### Inpatient & Ward Analytics
+![Inpatient Analytics](frontend/Screenshots/Inpatient.png)
+*Ward-level metrics, length of stay, and readmission rates by diagnosis*
+
+### AI-Powered Patient Risk Assessment
+![Risk Assessment](frontend/Screenshots/Risk.png)
+*Interactive risk scoring with clinical recommendations and population stratification*
 
 </div>
 
