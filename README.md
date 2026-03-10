@@ -2,10 +2,11 @@
 
 A production-ready healthcare analytics platform featuring **Large Tabular Model (LTM)** for AI-powered clinical decision support, interactive dashboards, ETL pipeline, DuckDB data warehouse, and state-of-the-art machine learning risk predictions.
 
-**Live Demo (Frontend)**: https://hospital-insights-c9c40.web.app  
-**Source Code**: https://github.com/visurarodrigo/hospital-data-insights-pipeline
+**🌐 Live Demo**: https://hospital-insights-c9c40.web.app  
+**🔗 API Backend**: https://hospital-data-insights-pipeline.onrender.com  
+**📦 Source Code**: https://github.com/visurarodrigo/hospital-data-insights-pipeline
 
-*Note: Backend runs locally - see [Quick Start](#-quick-start) for setup*
+*✨ Fully deployed full-stack application - ready to showcase!*
 
 ---
 
@@ -263,36 +264,47 @@ The system intelligently leverages Large Tabular Model for foundation model capa
 
 ## 🌐 Deployment
 
-### Frontend (Firebase Hosting) ✅ Deployed
+### ✅ Full-Stack Deployed Application
 
+**🎨 Frontend (Firebase Hosting)**  
+Live URL: https://hospital-insights-c9c40.web.app  
+- Modern SaaS UI with dark mode
+- Fully responsive design
+- Real-time data visualizations
+
+**🚀 Backend API (Render.com)**  
+Live URL: https://hospital-data-insights-pipeline.onrender.com  
+- RESTful API with FastAPI
+- Automatic data generation on startup
+- ML-powered risk predictions
+- Interactive API docs: https://hospital-data-insights-pipeline.onrender.com/docs
+
+**💡 Note for Recruiters**: The free tier backend may take 15-20 seconds on first load (cold start). After that, it's instant!
+
+### Redeploy Instructions
+
+**Frontend**:
 ```bash
-# Deploy frontend
-firebase login
 firebase deploy --only hosting
 ```
 
-**Live URL**: https://hospital-insights-c9c40.web.app
-
-### Backend (Local Development) 🖥️
-
-**Current Setup**: Backend runs locally for development and testing
-
+**Backend**: Push to GitHub main branch - auto-deploys via Render
 ```bash
-# Run backend locally
+git push origin main
+```
+
+### Local Development
+
+**Backend**:
+```bash
+# Generate data and run locally
+python scripts/run_pipeline.py
 python -m uvicorn backend.api:app --reload --port 3000
 ```
 
-**Access**: http://localhost:3000
+**Frontend**: Open `frontend/index.html` in browser or use Live Server
 
-### Backend Cloud Deployment (Optional - Not Yet Implemented)
-
-If you want to deploy the backend to production, here are the options:
-
-**Option 1: Railway**
-1. Visit https://railway.app
-2. Connect GitHub repository
-3. Deploy automatically
-4. Update `frontend/dashboard.js` with Railway URL
+For detailed deployment guide, see [DEPLOYMENT.md](DEPLOYMENT.md)
 
 **Option 2: Google Cloud Run**
 ```bash

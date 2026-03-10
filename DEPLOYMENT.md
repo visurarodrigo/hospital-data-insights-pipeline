@@ -2,8 +2,15 @@
 
 ## Current Deployment Status
 
-✅ **Frontend**: Deployed on Firebase Hosting (Modern SaaS UI with Dark Mode)  
-🖥️ **Backend**: Running locally on port 3000 (not yet deployed to cloud)
+✅ **Frontend**: Deployed on Firebase Hosting  
+   - URL: https://hospital-insights-c9c40.web.app
+   - Modern SaaS UI with dark mode
+   - Fully responsive design
+
+✅ **Backend**: Deployed on Render (Free Tier)  
+   - URL: https://hospital-data-insights-pipeline.onrender.com
+   - Auto-scales with containerized Docker deployment
+   - Automatic data generation on first startup
 
 ---
 
@@ -44,9 +51,59 @@ Your frontend is live at: `https://hospital-insights-c9c40.web.app`
 
 ---
 
-## Backend Deployment (Optional - Not Yet Implemented)
+## Render.com (Backend API) - ✅ DEPLOYED
 
-The backend currently runs locally for development. If you want to deploy it to production, here are the available options:
+### Current Setup
+
+**Backend URL**: https://hospital-data-insights-pipeline.onrender.com
+
+**Deployment Type**: Docker container on Render free tier  
+**Auto-scaling**: Spins down after 15 min inactivity (free tier)  
+**Data Generation**: Automatic on first startup
+
+### How It Was Deployed
+
+1. **Connected GitHub Repository**
+   - Repository: https://github.com/visurarodrigo/hospital-data-insights-pipeline
+   - Branch: main
+   - Auto-deploys on push
+
+2. **Configuration**
+   - Build Method: Docker
+   - Docker File: `Dockerfile` at root
+   - Port: Dynamic (uses Render's PORT env variable)
+   - Instance: Free tier (512 MB RAM, 0.1 CPU)
+
+3. **Features**
+   - ✅ Automatic data generation if database missing
+   - ✅ ML models (Random Forest with 97.9% accuracy)
+   - ✅ DuckDB data warehouse (5K patients, 15K visits)
+   - ✅ RESTful API with FastAPI
+   - ✅ CORS enabled for cross-origin requests
+
+### API Endpoints
+
+Test the live API:
+- Health: https://hospital-data-insights-pipeline.onrender.com/health
+- Summary: https://hospital-data-insights-pipeline.onrender.com/summary
+- Docs: https://hospital-data-insights-pipeline.onrender.com/docs
+
+### Redeployment
+
+Push changes to GitHub main branch:
+```bash
+git add .
+git commit -m "Your changes"
+git push
+```
+
+Render automatically rebuilds and deploys (2-3 minutes).
+
+---
+
+## Alternative Deployment Options
+
+If you want to deploy elsewhere, here are other options:
 
 ### Google Cloud Run (Backend API)
 
