@@ -1,0 +1,82 @@
+{
+  "classifier": {
+    "model_type": "RandomForest",
+    "accuracy": 0.9791666666666666,
+    "precision": 0.9791666666666666,
+    "recall": 1.0,
+    "f1_score": 0.9894736842105263,
+    "roc_auc": 0.9787234042553192,
+    "train_samples": 384,
+    "test_samples": 96,
+    "features": 14,
+    "timestamp": "2026-03-10T16:58:47.061211",
+    "feature_importance": [
+      {
+        "feature": "admission_rate",
+        "importance": 0.4219227919990483
+      },
+      {
+        "feature": "visit_frequency",
+        "importance": 0.20073283922657398
+      },
+      {
+        "feature": "age",
+        "importance": 0.12786886758725058
+      },
+      {
+        "feature": "total_visits",
+        "importance": 0.07472536409099224
+      },
+      {
+        "feature": "avg_wait_time",
+        "importance": 0.06065885623460805
+      },
+      {
+        "feature": "total_admissions",
+        "importance": 0.04128420553503937
+      },
+      {
+        "feature": "bmi",
+        "importance": 0.03111788957367788
+      },
+      {
+        "feature": "frequent_visitor",
+        "importance": 0.014189884516582289
+      },
+      {
+        "feature": "chronic_condition_count",
+        "importance": 0.010749028836102658
+      },
+      {
+        "feature": "senior_citizen",
+        "importance": 0.008899126788128733
+      },
+      {
+        "feature": "multiple_conditions",
+        "importance": 0.00692769997686747
+      },
+      {
+        "feature": "high_bmi",
+        "importance": 0.0007723861194550009
+      },
+      {
+        "feature": "has_chronic_condition",
+        "importance": 0.00015105951567347207
+      },
+      {
+        "feature": "is_smoker",
+        "importance": 0.0
+      }
+    ]
+  },
+  "regressor": {
+    "model_type": "RandomForestRegressor",
+    "rmse": 19.195072383295802,
+    "mae": 15.19533022463488,
+    "r2_score": 0.1794252069249691,
+    "train_samples": 12000,
+    "test_samples": 3000,
+    "features": 14,
+    "timestamp": "2026-03-10T16:58:47.417485"
+  }
+}

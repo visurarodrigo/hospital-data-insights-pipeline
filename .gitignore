@@ -23,16 +23,16 @@ wheels/
 .installed.cfg
 *.egg
 
-# Data files (generated)
-backend/data/raw/*.parquet
-backend/data/processed/*.parquet
-backend/data/*.db
-backend/data/*.duckdb
+# Data files (generated) - COMMENTED OUT FOR DEPLOYMENT
+# backend/data/raw/*.parquet
+# backend/data/processed/*.parquet
+# backend/data/*.db
+# backend/data/*.duckdb
 
-# Models (generated)
-backend/models/*.pkl
-backend/models/*.joblib
-backend/models/*.json
+# Models (generated) - COMMENTED OUT FOR DEPLOYMENT
+# backend/models/*.pkl
+# backend/models/*.joblib
+# backend/models/*.json
 
 # IDE
 .vscode/
