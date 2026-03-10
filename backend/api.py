@@ -82,10 +82,14 @@ async def startup_event():
         print("⚠️  Data not found - generating on first startup...")
         try:
             import sys
-            sys.path.append('.')
-            from scripts.run_pipeline import run_complete_pipeline
-            run_complete_pipeline()
-            print("✅ Data generation complete")
+            import subprocess
+            # Run pipeline script
+            result = subprocess.run([sys.executable, 'scripts/run_pipeline.py'], 
+                                  capture_output=True, text=True, timeout=300)
+            if result.returncode == 0:
+                print("✅ Data generation complete")
+            else:
+                print(f"❌ Data generation failed: {result.stderr}")
         except Exception as e:
             print(f"❌ Failed to generate data: {e}")
     
