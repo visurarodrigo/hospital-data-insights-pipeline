@@ -8,7 +8,7 @@
 // IMPORTANT: Update this URL after deploying your backend API
 // For Railway: https://your-app.railway.app
 // For Google Cloud Run: https://hospital-api-xxxxx-uc.a.run.app
-const API_BASE_URL = 'http://localhost:3000';  // Change this to your deployed API URL
+const API_BASE_URL = 'https://hospital-data-insights-pipeline.onrender.com';  // Change this to your deployed API URL
 
 // State
 let currentPage = 'overview';
