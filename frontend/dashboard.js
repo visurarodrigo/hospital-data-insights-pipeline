@@ -48,6 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(() => {
         loadAllPages();
     }, 300000);
+    
+    // Keep-alive heartbeat every 12 minutes (prevents Render free tier spin-down)
+    setInterval(() => {
+        keepAliveHeartbeat();
+    }, 720000);
 });
 
 /**
@@ -235,6 +240,44 @@ function setupEventListeners() {
 }
 
 /**
+ * Keep-alive heartbeat to prevent Render free tier spin-down
+ */
+async function keepAliveHeartbeat() {
+    try {
+        const response = await fetchWithRetry(`${API_BASE_URL}/health`, {}, 2);
+        if (response.ok) {
+            console.log('✅ Keep-alive heartbeat sent');
+        }
+    } catch (error) {
+        console.warn('⚠️ Keep-alive heartbeat failed, will retry on next request');
+    }
+}
+
+/**
+ * Fetch with retry logic and exponential backoff
+ */
+async function fetchWithRetry(url, options = {}, retries = 3) {
+    for (let i = 0; i < retries; i++) {
+        try {
+            const response = await fetch(url, {
+                ...options,
+                signal: AbortSignal.timeout ? AbortSignal.timeout(10000) : undefined
+            });
+            if (response.ok) return response;
+            if (response.status === 503) {
+                throw new Error('Service Unavailable - will retry');
+            }
+            return response;
+        } catch (error) {
+            if (i === retries - 1) throw error;
+            const delay = Math.pow(2, i) * 1000 + Math.random() * 1000; // Exponential backoff + jitter
+            console.log(`🔄 Retry ${i + 1}/${retries} after ${delay.toFixed(0)}ms...`);
+            await new Promise(r => setTimeout(r, delay));
+        }
+    }
+}
+
+/**
  * Check API health status
  */
 async function checkAPIStatus() {
@@ -242,7 +285,7 @@ async function checkAPIStatus() {
     const statusText = document.getElementById('statusText');
     
     try {
-        const response = await fetch(`${API_BASE_URL}/health`);
+        const response = await fetchWithRetry(`${API_BASE_URL}/health`);
         
         if (response.ok) {
             statusDot.className = 'status-dot online';
@@ -255,7 +298,7 @@ async function checkAPIStatus() {
         statusDot.className = 'status-dot offline';
         statusText.textContent = 'API Offline';
         console.error('❌ API Status Check Failed:', error);
-        showToast('Unable to connect to API. Please check your connection.', 'error');
+        showToast('Unable to connect to API. Retrying...', 'warning');
     }
 }
 
@@ -312,9 +355,9 @@ async function loadAllPages() {
 async function loadOverviewPage() {
     try {
         const [summaryRes, monthlyRes, deptRes] = await Promise.all([
-            fetch(`${API_BASE_URL}/summary`),
-            fetch(`${API_BASE_URL}/monthly-trends`),
-            fetch(`${API_BASE_URL}/department-stats`)
+            fetchWithRetry(`${API_BASE_URL}/summary`),
+            fetchWithRetry(`${API_BASE_URL}/monthly-trends`),
+            fetchWithRetry(`${API_BASE_URL}/department-stats`)
         ]);
         
         const summary = await summaryRes.json();
@@ -344,7 +387,7 @@ async function loadOverviewPage() {
  */
 async function loadBillingSummary() {
     try {
-        const response = await fetch(`${API_BASE_URL}/billing-summary`);
+        const response = await fetchWithRetry(`${API_BASE_URL}/billing-summary`);
         const data = await response.json();
         
         const revenue = data.total_revenue || 0;
@@ -361,7 +404,7 @@ async function loadBillingSummary() {
  */
 async function loadOPDAnalytics() {
     try {
-        const response = await fetch(`${API_BASE_URL}/opd-analytics`);
+        const response = await fetchWithRetry(`${API_BASE_URL}/opd-analytics`);
         const data = await response.json();
         
         // Wait times by department
@@ -441,7 +484,7 @@ async function loadOPDAnalytics() {
  */
 async function loadInpatientAnalytics() {
     try {
-        const response = await fetch(`${API_BASE_URL}/inpatient-analytics`);
+        const response = await fetchWithRetry(`${API_BASE_URL}/inpatient-analytics`);
         const data = await response.json();
         
         // LOS by ward
@@ -508,7 +551,7 @@ async function loadInpatientAnalytics() {
  */
 async function loadPatientList() {
     try {
-        const response = await fetch(`${API_BASE_URL}/patients/list?limit=1000`);
+        const response = await fetchWithRetry(`${API_BASE_URL}/patients/list?limit=1000`);
         const data = await response.json();
         
         patientsData = data.patients || [];
@@ -570,8 +613,8 @@ async function predictPatientRisk(patient) {
     }
     
     try {
-        // Call prediction API
-        const response = await fetch(`${API_BASE_URL}/risk/${patient.patient_id}`);
+        // Call prediction API with retry logic
+        const response = await fetchWithRetry(`${API_BASE_URL}/risk/${patient.patient_id}`);
         const data = await response.json();
         
         const riskScore = data.risk_probability * 100;
